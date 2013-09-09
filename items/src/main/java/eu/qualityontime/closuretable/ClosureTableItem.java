@@ -2,7 +2,8 @@ package eu.qualityontime.closuretable;
 
 import org.javalite.activejdbc.*;
 
-public interface ClosureTableItem <T extends Model> {
+@SuppressWarnings("rawtypes")
+public interface ClosureTableItem <T extends Model & ClosureTableItem> {
 
   public void addDescendant(T m);
 

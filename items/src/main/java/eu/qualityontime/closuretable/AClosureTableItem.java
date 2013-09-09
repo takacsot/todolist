@@ -2,7 +2,7 @@ package eu.qualityontime.closuretable;
 
 import org.javalite.activejdbc.*;
 
-public abstract class AClosureTableItem<T extends Model> extends Model implements ClosureTableItem<T> {
+public abstract class AClosureTableItem<T extends Model & ClosureTableItem<?>> extends Model implements ClosureTableItem<T> {
   protected final ClosureTableItem<T> impl;
   protected Class<? extends Model> closure_table;
 

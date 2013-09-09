@@ -34,7 +34,7 @@ public class ItemHierarchyTest extends TodoDbTest {
   }
 
   @Test
-  public void addLeaf() throws Exception {
+  public void addLeafToRoot() throws Exception {
     cleanTable("item_tree_paths", "items");
     Item parent = new Item("p");
     Item leaf = new Item("leaf");
@@ -56,9 +56,29 @@ public class ItemHierarchyTest extends TodoDbTest {
     subtree.saveIt();
     Item leaf = Item.createIt("name", "subleaf");
     subtree.addDescendant(leaf);
+//    printTree(subtree);
     Item new_parent = Item.createIt("name", "new root", "state", "x");
     new_parent.addDescendant(subtree);
-    ItemTreePath.findAll().dump();
+//    ItemTreePath.findAll().dump();
     assertEquals(2, new_parent.allDescendants().size());
+//    printTree(new_parent);
+  }
+  
+  @Test
+  public void add_leaf_to_non_root() throws Exception {
+    Item root = new Item("root");
+    Item middle = new Item("midddle");
+    Item leaf = new Item("leaf");
+    root.saveIt(); middle.saveIt();leaf.saveIt();
+    middle.addDescendant(leaf);
+    root.addDescendant(middle);
+    printTree(root);
+    Item new_leaf = new Item("new leaf"); new_leaf.saveIt();
+    leaf.addDescendant(new_leaf);
+    printTree(root);
+    assertEquals(3, root.allDescendants().size());
+    assertEquals(2, middle.allDescendants().size());
+    assertEquals(1, leaf.allDescendants().size());
+    assertEquals(0, new_leaf.allDescendants().size());
   }
 }

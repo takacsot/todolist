@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.javalite.activejdbc.*;
 import org.junit.*;
 
+import eu.qualityontime.closuretable.ClosureTableItem;
 import eu.qualityontime.todo.model.*;
 
 public abstract class TodoDbTest {
@@ -84,4 +85,24 @@ public abstract class TodoDbTest {
     }
   }
 
+  protected void printTree(ClosureTableItem<?> o){
+    System.out.println(toTree(o));
+  }
+
+  protected String toTree(ClosureTableItem<?> obj) {
+    StringBuilder sb = new StringBuilder();
+    toTree(0, obj, sb);
+    return sb.toString();
+  }
+
+  @SuppressWarnings("rawtypes")
+  private void toTree(int i, ClosureTableItem<?> obj, StringBuilder sb) {
+    for(int j = 0; j<i;j++){
+      sb.append(" ");
+    }
+    sb.append(obj.toString()).append("\n");
+    for(Model ch: obj.directDescendants()){
+      toTree(i+2, (ClosureTableItem)ch, sb);
+    }
+  }
 }

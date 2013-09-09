@@ -16,4 +16,9 @@ public class Item extends AClosureTableItem<Item> {
     set("name", name);
     set("state","open");
   }
+  
+  @Override
+  public String toString(){
+    return "Item"+toMap();
+  }
 }
