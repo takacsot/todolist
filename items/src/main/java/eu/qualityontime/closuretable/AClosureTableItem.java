@@ -20,8 +20,8 @@ public abstract class AClosureTableItem<T extends Model> extends Model implement
 
 
   @Override
-  public T addDescendant(T m) {
-    return impl.addDescendant(m);
+  public void addDescendant(T m) {
+    impl.addDescendant(m);
   }
 
   @Override

@@ -15,12 +15,13 @@ public class ClosureTableItemImpl<T extends Model> implements ClosureTableItem<T
   }
 
   @Override
-  public T addDescendant(T m) {
-    return baseObj;
+  public void addDescendant(T m) {
+    Model closure_row = Model.create(closure_table, "ancestor",baseObj.getId(),"descendant", m.getId(), "path_length", 1);
+    closure_row.saveIt();
+    //baseObj.purgeCache();
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public LazyList<T> ancestors() {
     return (LazyList<T>) Model.findBySQL(
         baseObj.getClass(),
@@ -36,17 +37,15 @@ public class ClosureTableItemImpl<T extends Model> implements ClosureTableItem<T
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public LazyList<T> allDescendants() {
     return (LazyList<T>) Model.findBySQL(
         baseObj.getClass(),
         "select s.* from " + Model.getTableName(baseObj.getClass()) + " as s " + "join "
             + Model.getTableName(closure_table)
-            + " as t on(s.id = t.descendant) where t.ancestor = ? order by path_length ", baseObj.getId());
+            + " as t on(s.id = t.descendant) where t.ancestor = ? and t.ancestor <> t.descendant order by path_length ", baseObj.getId());
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public LazyList<T> directDescendants() {
     return (LazyList<T>) Model.findBySQL(
         baseObj.getClass(),

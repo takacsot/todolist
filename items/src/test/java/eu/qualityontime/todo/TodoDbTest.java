@@ -13,8 +13,8 @@ import eu.qualityontime.todo.model.*;
 
 public abstract class TodoDbTest {
   protected ModelContext<Item> Item = Model.with(Item.class);
-  protected ModelContext<Timelog> Timelog= Model.with(Timelog.class);
-  protected ModelContext<ItemTreePath> ItemTreePath= Model.with(ItemTreePath.class);
+  protected ModelContext<Timelog> Timelog = Model.with(Timelog.class);
+  protected ModelContext<ItemTreePath> ItemTreePath = Model.with(ItemTreePath.class);
   static boolean schemaGenerated = false;
 
   @Before
@@ -71,6 +71,16 @@ public abstract class TodoDbTest {
       Statement st = connection.createStatement();
       st.executeUpdate(statement);
       st.close();
+    }
+  }
+
+  protected void cleanTable(String... tables) throws SQLException {
+    Connection con = Base.connection();
+    for (String table : tables) {
+      String delSql = "delete from " + table;
+      Statement s = con.createStatement();
+      s.executeUpdate(delSql);
+      s.close();
     }
   }
 

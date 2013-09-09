@@ -4,7 +4,7 @@ import org.javalite.activejdbc.*;
 
 public interface ClosureTableItem <T extends Model> {
 
-  public T addDescendant(T m);
+  public void addDescendant(T m);
 
   public LazyList<T> ancestors();
 
